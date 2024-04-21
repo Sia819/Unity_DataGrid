@@ -48,6 +48,6 @@ public class DraggableButton : MonoBehaviour, IDragHandler, IBeginDragHandler
 
     private void NotifySizeChanged()
     {
-        leftPanel.// TODO : Header에서 Column1의 Info 알아낸 다음 Width 변경
+        //leftPanel.// TODO : Header에서 Column1의 Info 알아낸 다음 Width 변경
     }
 }
