@@ -38,9 +38,23 @@ public class ListView : MonoBehaviour
             listViewItem.Init(this);
             Header = listViewItem;
         }
+        else
+        {
+            Header.Init(this);
+        }
+
+        // Add Exist Rows
+        for (int i = 0; i < listItemParent.transform.childCount; i++)
+        {
+            Transform children = listItemParent.transform.GetChild(i);
+            if (children.TryGetComponent<ListViewRow>(out ListViewRow row))
+            {
+                rows.Add(row);
+            }
+        }
 
         // Content Calculate Height
-        ListViewScrollCal();
+        //ListViewScrollCal();
     }
 
     public void AddColumn(string columnName)
@@ -54,6 +68,11 @@ public class ListView : MonoBehaviour
         ListViewRow listViewRow = listViewRowInstant.GetComponent<ListViewRow>();
         listViewRow.Init(this, rows);
         this.rows.Add(listViewRow);
+    }
+
+    public int GetRowIndex(ListViewRow listViewRow)
+    {
+        return rows.IndexOf(listViewRow);
     }
 
     /// <summary> 아이템 추가 등의 이유로 ListView의 Content의 높이를 조절합니다. </summary>
@@ -88,6 +107,18 @@ public class ListView : MonoBehaviour
                 float width = Header.GetColumnInfo(j).Width;
                 rows[i].ChangeItemWidth(j, width);
             }
+        }
+    }
+
+    public void ListViewWidthCal(int columnIndex)
+    {
+        for (int i = 0; i < rows.Count; i++)
+        {
+            //for (int j = 0; j < Header.ColumnCount; j++)
+            //{
+            float width = Header.GetColumnInfo(columnIndex).Width;
+            rows[i].ChangeItemWidth(columnIndex, width);
+            //}
         }
     }
 }
