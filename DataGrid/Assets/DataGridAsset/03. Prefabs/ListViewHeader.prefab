@@ -57,10 +57,10 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 0
   m_Spacing: 0
-  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
+  m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
@@ -76,4 +76,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2ce003e7645b9d42986941f1050f312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  columnButton: {fileID: 951533858428331933, guid: 0999b65a05de0774591cdaac155b7563, type: 3}
+  columnButtonPrefab: {fileID: 951533858428331933, guid: 0999b65a05de0774591cdaac155b7563, type: 3}
+  columnResizerPrefab: {fileID: 1217111936086014323, guid: a30a5be7fde758444b94acfb02573ea3, type: 3}

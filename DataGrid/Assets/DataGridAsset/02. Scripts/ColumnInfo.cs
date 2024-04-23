@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(RectTransform))]
 public class ColumnInfo : MonoBehaviour
 {
     public int ColumnIndex = -1;
@@ -21,9 +22,22 @@ public class ColumnInfo : MonoBehaviour
         }
     }
     
-    public float Width { get; set; } = 110f;
+    public float Width 
+    { 
+        get => (this.transform as RectTransform).rect.width;
+        set
+        {
+            Debug.Log(value);
+            RectTransform rectTransform = (this.transform as RectTransform);
+            rectTransform.sizeDelta = new Vector2(value, rectTransform.sizeDelta.y);
+        }
+    }
     
-    public float FontSize { get; set; } = 14f;
+    public float FontSize 
+    { 
+        get => Text.fontSize;
+        set => Text.fontSize = value; 
+    }
     
     public Color Color { get; set; } = Color.black;
 

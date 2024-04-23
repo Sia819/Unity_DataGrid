@@ -11,9 +11,11 @@ public class ListViewRow : MonoBehaviour
     public List<GameObject> gameObjectItems;   // Columns of Row Gamebject. for example label, buttons...
     public bool useCrossBackgroundColor = true;
 
+    [SerializeField] private GameObject content;
+
     [Header("Prefabs")]
-    [SerializeField] private GameObject buttonPrefab;
-    [SerializeField] private GameObject textPrefab;
+    [SerializeField] private GameObject cellTextPrefab;
+    [SerializeField] private GameObject cellButtonPrefab;
 
     public int RowIndex { get; private set; }
 
@@ -22,20 +24,20 @@ public class ListViewRow : MonoBehaviour
 
     private void Start()
     {
-        HorizontalLayoutGroup group = this.gameObject.GetComponent<HorizontalLayoutGroup>();
-        group.childControlHeight = false;
-        group.childControlWidth = false;
+        //HorizontalLayoutGroup group = this.gameObject.GetComponent<HorizontalLayoutGroup>();
+        //group.childControlHeight = false;
+        //group.childControlWidth = false;
 
         // Add exist cells
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < content.transform.childCount; i++)
         {
             // TODO : cell.cs 가 생기면 TryGetComponent()로 구조가 변경되어야함.
-            Transform children = transform.GetChild(i);
+            Transform children = content.transform.GetChild(i);
             gameObjectItems.Add(children.gameObject);
         }
     }
 
-    public void Init(ListView parent, string[] jsonData)
+    public void Init(ListView parent, string[] cellData)
     {
         if (initialized == true)
         {
@@ -44,7 +46,7 @@ public class ListViewRow : MonoBehaviour
         }
 
         this.parent = parent;
-        ChangeItem(jsonData);
+        ChangeItem(cellData);
         initialized = true;
         GetInstanceID();
     }
@@ -56,7 +58,7 @@ public class ListViewRow : MonoBehaviour
             ColumnInfo columnInfo = parent.Header.GetColumnInfo(i);
             if (columnInfo == null) return;
 
-            GameObject textObject = Instantiate(textPrefab, this.transform);
+            GameObject textObject = Instantiate(cellTextPrefab, content.transform);
             RectTransform rectTransform = textObject.GetComponent<RectTransform>();
             TMP_Text textComponent = textObject.GetComponent<TMP_Text>();
 

@@ -5,9 +5,19 @@ using static Unity.VisualScripting.Dependencies.Sqlite.SQLiteConnection;
 
 public class ListViewHeader : MonoBehaviour
 {
-    [SerializeField] private GameObject columnButton;
+    [SerializeField] private GameObject columnButtonPrefab;
+    [SerializeField] private GameObject columnResizerPrefab;
 
     public int ColumnCount => columns.Count;
+    public float ResizerWidth
+    {
+        get
+        {
+            var result = (columnResizerPrefab.transform as RectTransform).rect.width;
+            Debug.Log(result);
+            return result;
+        }
+    }
 
     private ListView parent;
     private List<ColumnInfo> columns = new List<ColumnInfo>();
@@ -24,7 +34,7 @@ public class ListViewHeader : MonoBehaviour
                 column.ColumnIndex = i;
                 column.ListView = parent;
                 children.name = $"Column{columns.Count + 1}";
-                AddColumn(children.gameObject, column, children.name);
+                AddColumn(children.gameObject, children.name);
             }
         }
     }
@@ -46,22 +56,28 @@ public class ListViewHeader : MonoBehaviour
     }
 
     /// <summary> Add New Column </summary>
-    public void AddColumn(string columnName) // TODO : ColumnInfo -> Width, Color, Font 추가
+    public void AddColumn(string columnName, float width = 100f, float fontSize = 14f) // TODO : ColumnInfo -> Color 추가
     {
-        GameObject colBtnIns = Instantiate(columnButton, this.transform);
-        ColumnInfo columnInfo = colBtnIns.GetComponent<ColumnInfo>();
-        AddColumn(colBtnIns, columnInfo, columnName);
+        GameObject colBtnIns = Instantiate(columnButtonPrefab, this.transform);
+        AddColumn(colBtnIns, columnName, width, fontSize);
     }
 
     /// <summary> Add Exist Column </summary>
-    private void AddColumn(GameObject column, ColumnInfo columnInfo, string columnName)
+    private void AddColumn(GameObject column, string columnName, float width = 100f, float fontSize = 14f)
     {
-        RectTransform rectTransform = column.GetComponent<RectTransform>();
-
-        rectTransform.sizeDelta = new Vector2(columnInfo.Width, rectTransform.sizeDelta.y);     // Column Size 조절
-        columnInfo.Name = $"Column{columns.Count + 1}";
+        ColumnInfo columnInfo = column.GetComponent<ColumnInfo>();
+        columnInfo.ListView = parent;
+        columnInfo.Name = columnName;
         columnInfo.ColumnIndex = columns.Count;
+        columnInfo.Width = width;
+        columnInfo.FontSize = fontSize;
         columns.Add(columnInfo);
+        if (parent.UseColumnResizer == true)
+        {
+            GameObject resizer = Instantiate(columnResizerPrefab, this.transform);
+            ColumnResizer columnResizer = resizer.GetComponent<ColumnResizer>();
+            columnResizer.leftPanel = column.transform as RectTransform;
+        }
     }
 
     public ColumnInfo GetColumnInfo(int index)

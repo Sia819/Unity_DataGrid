@@ -11,8 +11,11 @@ public class ListView : MonoBehaviour
     [SerializeField] private GameObject listViewRowPrefab;                  // Prefab to add items
 
     [field:Space(5)]
-    [field:Header("ListView Header")]
+    [field:Header("ListView Header (Optional)")]
     [field:SerializeField] public ListViewHeader Header { get; private set; }
+
+    public bool UseColumnResizer { get; set; } = false;
+
     private ObservableCollection<ListViewRow> rows = new();
 
     private void Start()
@@ -57,9 +60,17 @@ public class ListView : MonoBehaviour
         //ListViewScrollCal();
     }
 
-    public void AddColumn(string columnName)
+    public void AddColumn(params string[] columnName)
     {
-        Header.AddColumn(columnName);
+        for(int i = 0; i < columnName.Length; i++)
+        {
+            Header.AddColumn(columnName[i]);
+        }
+    }
+
+    public void AddColumn(string columnName, float width, float fontSize)
+    {
+        Header.AddColumn(columnName, width, fontSize);
     }
 
     public void AddRow(params string[] rows)
@@ -105,6 +116,8 @@ public class ListView : MonoBehaviour
             for (int j = 0; j < Header.ColumnCount; j++)
             {
                 float width = Header.GetColumnInfo(j).Width;
+                if (UseColumnResizer == true)
+                    width += Header.ResizerWidth;
                 rows[i].ChangeItemWidth(j, width);
             }
         }
@@ -114,11 +127,10 @@ public class ListView : MonoBehaviour
     {
         for (int i = 0; i < rows.Count; i++)
         {
-            //for (int j = 0; j < Header.ColumnCount; j++)
-            //{
             float width = Header.GetColumnInfo(columnIndex).Width;
+            if (UseColumnResizer == true)
+                width += Header.ResizerWidth;
             rows[i].ChangeItemWidth(columnIndex, width);
-            //}
         }
     }
 }
