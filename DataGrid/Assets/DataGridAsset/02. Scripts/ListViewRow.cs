@@ -31,7 +31,7 @@ public class ListViewRow : MonoBehaviour
         // Add exist cells
         for (int i = 0; i < content.transform.childCount; i++)
         {
-            // TODO : cell.cs °¡ »ý±â¸é TryGetComponent()·Î ±¸Á¶°¡ º¯°æµÇ¾î¾ßÇÔ.
+            // TODO : cell.cs ê°€ ìƒê¸°ë©´ TryGetComponent()ë¡œ êµ¬ì¡°ê°€ ë³€ê²½ë˜ì–´ì•¼í•¨.
             Transform children = content.transform.GetChild(i);
             gameObjectItems.Add(children.gameObject);
         }
@@ -41,7 +41,7 @@ public class ListViewRow : MonoBehaviour
     {
         if (initialized == true)
         {
-            Debug.LogWarning("µÎ¹ø ÀÌ»ó ListViewRow¸¦ ÃÊ±âÈ­ÇÏ·Á Çß½À´Ï´Ù.");
+            Debug.LogWarning("ë‘ë²ˆ ì´ìƒ ListViewRowë¥¼ ì´ˆê¸°í™”í•˜ë ¤ í–ˆìŠµë‹ˆë‹¤.");
             return;
         }
 

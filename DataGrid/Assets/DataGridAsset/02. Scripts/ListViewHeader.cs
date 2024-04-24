@@ -43,12 +43,12 @@ public class ListViewHeader : MonoBehaviour
     {
         if (initialized == true)
         {
-            Debug.LogWarning("µÎ¹ø ÀÌ»ó ListViewHeader¸¦ ÃÊ±âÈ­ÇÏ·Á Çß½À´Ï´Ù.");
+            Debug.LogWarning("ë‘ë²ˆ ì´ìƒ ListViewHeaderë¥¼ ì´ˆê¸°í™”í•˜ë ¤ í–ˆìŠµë‹ˆë‹¤.");
             return;
         }
 
         this.parent = parent;
-        foreach(var columnName in columnNames)
+        foreach (var columnName in columnNames)
         {
             AddColumn(columnName);
         }
@@ -56,7 +56,7 @@ public class ListViewHeader : MonoBehaviour
     }
 
     /// <summary> Add New Column </summary>
-    public void AddColumn(string columnName, float width = 100f, float fontSize = 14f) // TODO : ColumnInfo -> Color Ãß°¡
+    public void AddColumn(string columnName, float width = 100f, float fontSize = 14f) // TODO : ColumnInfo -> Color ì¶”ê°€
     {
         GameObject colBtnIns = Instantiate(columnButtonPrefab, this.transform);
         AddColumn(colBtnIns, columnName, width, fontSize);
@@ -76,7 +76,7 @@ public class ListViewHeader : MonoBehaviour
         {
             GameObject resizer = Instantiate(columnResizerPrefab, this.transform);
             ColumnResizer columnResizer = resizer.GetComponent<ColumnResizer>();
-            columnResizer.leftPanel = column.transform as RectTransform;
+            columnResizer.leftColumn = column.transform as RectTransform;
         }
     }
 
@@ -84,7 +84,7 @@ public class ListViewHeader : MonoBehaviour
     {
         if (index < 0 || index >= columns.Count)
         {
-            Debug.LogWarning($"ColumnÀÇ ¹üÀ§¸¦ ¹ş¾î³ª´Â ÀÎµ¦½º'{index}'¿¡ Á¢±ÙÇß½À´Ï´Ù!");
+            Debug.LogWarning($"Columnì˜ ë²”ìœ„ë¥¼ ë²—ì–´ë‚˜ëŠ” ì¸ë±ìŠ¤'{index}'ì— ì ‘ê·¼í–ˆìŠµë‹ˆë‹¤!");
             return null;
         }
         return columns[index];

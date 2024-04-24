@@ -10,9 +10,9 @@ public class ListView : MonoBehaviour
     [SerializeField] private GameObject listViewHeaderPrefab;            // Column Button
     [SerializeField] private GameObject listViewRowPrefab;                  // Prefab to add items
 
-    [field:Space(5)]
-    [field:Header("ListView Header (Optional)")]
-    [field:SerializeField] public ListViewHeader Header { get; private set; }
+    [field: Space(5)]
+    [field: Header("ListView Header (Optional)")]
+    [field: SerializeField] public ListViewHeader Header { get; private set; }
 
     public bool UseColumnResizer { get; set; } = false;
 
@@ -62,7 +62,7 @@ public class ListView : MonoBehaviour
 
     public void AddColumn(params string[] columnName)
     {
-        for(int i = 0; i < columnName.Length; i++)
+        for (int i = 0; i < columnName.Length; i++)
         {
             Header.AddColumn(columnName[i]);
         }
@@ -86,7 +86,7 @@ public class ListView : MonoBehaviour
         return rows.IndexOf(listViewRow);
     }
 
-    /// <summary> ¾ÆÀÌÅÛ Ãß°¡ µîÀÇ ÀÌÀ¯·Î ListViewÀÇ ContentÀÇ ³ôÀÌ¸¦ Á¶ÀıÇÕ´Ï´Ù. </summary>
+    /// <summary> ì•„ì´í…œ ì¶”ê°€ ë“±ì˜ ì´ìœ ë¡œ ListViewì˜ Contentì˜ ë†’ì´ë¥¼ ì¡°ì ˆí•©ë‹ˆë‹¤. </summary>
     private void ListViewScrollCal()
     {
         float totalHeight = 0;
@@ -95,20 +95,20 @@ public class ListView : MonoBehaviour
             RectTransform childRect = listItemParent.transform.GetChild(i) as RectTransform;
             if (childRect != null)
             {
-                totalHeight += childRect.rect.height;  // ÀÚ½ÄÀÇ ³ôÀÌ¸¦ ´õÇÕ´Ï´Ù.
+                totalHeight += childRect.rect.height;  // ìì‹ì˜ ë†’ì´ë¥¼ ë”í•©ë‹ˆë‹¤.
             }
         }
 
-        // listItemParentÀÇ RectTransformÀÇ sizeDelta¸¦ Á¶Á¤ÇÕ´Ï´Ù.
+        // listItemParentì˜ RectTransformì˜ sizeDeltaë¥¼ ì¡°ì •í•©ë‹ˆë‹¤.
         RectTransform listItemParentRect = listItemParent.transform as RectTransform;
         if (listItemParentRect != null)
         {
-            // ±âÁ¸ÀÇ width´Â À¯ÁöÇÏ°í, height¸¸ totalHeight·Î ¼³Á¤ÇÕ´Ï´Ù.
+            // ê¸°ì¡´ì˜ widthëŠ” ìœ ì§€í•˜ê³ , heightë§Œ totalHeightë¡œ ì„¤ì •í•©ë‹ˆë‹¤.
             listItemParentRect.sizeDelta = new Vector2(listItemParentRect.sizeDelta.x, totalHeight);
         }
     }
 
-    /// <summary> Column WidthÀÇ º¯°æ µîÀÇ ÀÌÀ¯·Î ListView RowÀÇ ¸ğµç ¾ÆÀÌÅÛÀÇ Width¸¦ ÀçÁ¶ÀıÇÕ´Ï´Ù. </summary>
+    /// <summary> Column Widthì˜ ë³€ê²½ ë“±ì˜ ì´ìœ ë¡œ ListView Rowì˜ ëª¨ë“  ì•„ì´í…œì˜ Widthë¥¼ ì¬ì¡°ì ˆí•©ë‹ˆë‹¤. </summary>
     private void ListViewWidthCal()
     {
         for (int i = 0; i < rows.Count; i++)

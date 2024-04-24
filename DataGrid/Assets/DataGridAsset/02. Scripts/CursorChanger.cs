@@ -3,13 +3,13 @@ using UnityEngine.EventSystems;
 
 public class CursorChanger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public Texture2D cursorTexture; // Inspector¿¡¼­ ¼³Á¤ÇÒ Ä¿¼­ ÀÌ¹ÌÁö
+    public Texture2D cursorTexture; // Inspectorì—ì„œ ì„¤ì •í•  ì»¤ì„œ ì´ë¯¸ì§€
     private CursorMode cursorMode = CursorMode.Auto;
     private Vector2 hotSpot;
 
     void Start()
     {
-        // ÀÌ¹ÌÁöÀÇ Áß¾ÓÀ» hotSpotÀ¸·Î ¼³Á¤
+        // ì´ë¯¸ì§€ì˜ ì¤‘ì•™ì„ hotSpotìœ¼ë¡œ ì„¤ì •
         hotSpot = new Vector2(cursorTexture.width / 2, cursorTexture.height / 2);
     }
 
@@ -20,6 +20,6 @@ public class CursorChanger : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Cursor.SetCursor(null, Vector2.zero, cursorMode); // ±âº» Ä¿¼­·Î º¹¿ø
+        Cursor.SetCursor(null, Vector2.zero, cursorMode); // ê¸°ë³¸ ì»¤ì„œë¡œ ë³µì›
     }
 }

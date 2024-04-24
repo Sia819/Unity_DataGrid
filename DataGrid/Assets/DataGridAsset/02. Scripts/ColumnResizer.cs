@@ -4,17 +4,16 @@ using UnityEngine.UI;
 
 public class ColumnResizer : MonoBehaviour, IDragHandler, IBeginDragHandler
 {
-    public RectTransform leftPanel;  // ¿ŞÂÊ ÆĞ³Î
+    public RectTransform leftColumn;  // ì™¼ìª½ íŒ¨ë„
+    private float originalX;         // ë“œë˜ê·¸ ì‹œì‘ ì‹œì˜ ì´ˆê¸° X ìœ„ì¹˜
+    private float initialLeftWidth;  // ë“œë˜ê·¸ ì‹œì‘ ì‹œ ì™¼ìª½ íŒ¨ë„ì˜ ì´ˆê¸° ë„ˆë¹„
 
-    private float originalX;         // µå·¡±× ½ÃÀÛ ½ÃÀÇ ÃÊ±â X À§Ä¡
-    private float initialLeftWidth;  // µå·¡±× ½ÃÀÛ ½Ã ¿ŞÂÊ ÆĞ³ÎÀÇ ÃÊ±â ³Êºñ
-
-    public float minWidth = 100f;    // ÃÖ¼Ò ³Êºñ
-    public float maxWidth = 1000f;           // ÃÖ´ë ³Êºñ
+    public float minWidth = 100f;    // ìµœì†Œ ë„ˆë¹„
+    public float maxWidth = 1000f;           // ìµœëŒ€ ë„ˆë¹„ 
 
     private void Start()
     {
-        if (leftPanel == null)
+        if (leftColumn == null)
         {
             Debug.LogError("Panels or buttons are not assigned");
             return;
@@ -23,8 +22,8 @@ public class ColumnResizer : MonoBehaviour, IDragHandler, IBeginDragHandler
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        originalX = this.transform.localPosition.x; // µå·¡±× ½ÃÀÛ ½ÃÀÇ À§Ä¡ ÀúÀå
-        initialLeftWidth = leftPanel.rect.width; // µå·¡±× ½ÃÀÛ ½Ã ¿ŞÂÊ ÆĞ³ÎÀÇ ³Êºñ ÀúÀå
+        originalX = this.transform.localPosition.x; // ë“œë˜ê·¸ ì‹œì‘ ì‹œì˜ ìœ„ì¹˜ ì €ì¥
+        initialLeftWidth = leftColumn.rect.width; // ë“œë˜ê·¸ ì‹œì‘ ì‹œ ì™¼ìª½ íŒ¨ë„ì˜ ë„ˆë¹„ ì €ì¥
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -33,25 +32,25 @@ public class ColumnResizer : MonoBehaviour, IDragHandler, IBeginDragHandler
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
             (RectTransform)this.transform.parent, eventData.position, eventData.pressEventCamera, out localPoint))
         {
-            float newX = localPoint.x - originalX;  // ¿øÁ¡À¸·ÎºÎÅÍÀÇ º¯È­·® °è»ê
+            float newX = localPoint.x - originalX;  // ì›ì ìœ¼ë¡œë¶€í„°ì˜ ë³€í™”ëŸ‰ ê³„ì‚°
 
-            // ¿ŞÂÊ ÆĞ³ÎÀÇ »õ·Î¿î ³Êºñ °è»ê
+            // ì™¼ìª½ íŒ¨ë„ì˜ ìƒˆë¡œìš´ ë„ˆë¹„ ê³„ì‚°
             float newWidth = Mathf.Clamp(initialLeftWidth + newX, minWidth, maxWidth);
-            leftPanel.sizeDelta = new Vector2(newWidth, leftPanel.sizeDelta.y);
+            leftColumn.sizeDelta = new Vector2(newWidth, leftColumn.sizeDelta.y);
 
-            // Layout Group °»½Å, leftPanelÀÇ ·¹ÀÌ¾Æ¿ôÀ» °»½Å
-            LayoutRebuilder.ForceRebuildLayoutImmediate(leftPanel);
+            // Layout Group ê°±ì‹ , leftPanelì˜ ë ˆì´ì•„ì›ƒì„ ê°±ì‹ 
+            LayoutRebuilder.ForceRebuildLayoutImmediate(leftColumn);
             NotifySizeChanged(newWidth);
         }
     }
 
     private void NotifySizeChanged(float newSize)
     {
-        ColumnInfo column = leftPanel.GetComponent<ColumnInfo>();
+        ColumnInfo column = leftColumn.GetComponent<ColumnInfo>();
         column.Width = newSize;
         column.ListView.ListViewWidthCal(column.ColumnIndex);
 
-        //leftPanel.// TODO : Header¿¡¼­ Column1ÀÇ Info ¾Ë¾Æ³½ ´ÙÀ½ Width º¯°æ
-        // Resizer ¿·¿¡ ÀÖ´Â ColumnÀÌ ¸î¹øÂ° ColumnÀÎÁö ¸ğ¸£´Â ¹®Á¦.
+        //leftPanel.// TODO : Headerì—ì„œ Column1ì˜ Info ì•Œì•„ë‚¸ ë‹¤ìŒ Width ë³€ê²½
+        // Resizer ì˜†ì— ìˆëŠ” Columnì´ ëª‡ë²ˆì§¸ Columnì¸ì§€ ëª¨ë¥´ëŠ” ë¬¸ì œ.
     }
 }

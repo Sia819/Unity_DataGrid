@@ -22,20 +22,26 @@ public class Test : MonoBehaviour
     private void AddRowTest()
     {
         listView.UseColumnResizer = true;
-        listView.AddColumn("³¯Â¥",       width: 470f, fontSize: 50f);
-        listView.AddColumn("ÀÌ¸§",       width: 328f, fontSize: 50f);
-        listView.AddColumn("¼Ò¼Ó",       width: 192f, fontSize: 50f);
-        listView.AddColumn("»ç¹ø",       width: 285f, fontSize: 50f);
-        listView.AddColumn("ºÎÀç",       width: 205f, fontSize: 50f);
-        listView.AddColumn("µµ·á",       width: 210f, fontSize: 50f);
-        listView.AddColumn("ÆÁ»çÀÌÁî",   width: 208f, fontSize: 50f);
-        listView.AddColumn("ÅäÃâ¾Ğ",     width: 224f, fontSize: 50f);
-        listView.AddColumn("Èñ¼®·ü",     width: 180f, fontSize: 50f);
-        listView.AddColumn("µµ»öÂ÷¼ö",   width: 194f, fontSize: 50f);
-        listView.AddColumn("¼ºÀû¼­ Á¶È¸", width: 336f, fontSize: 50f);
-        listView.AddColumn("¼ºÀû¼­ »èÁ¦", width: 336f, fontSize: 50f);
+        listView.AddColumn("ë‚ ì§œ",       width: 470f, fontSize: 50f);
+        listView.AddColumn("ì´ë¦„",       width: 328f, fontSize: 50f);
+        listView.AddColumn("ì†Œì†",       width: 192f, fontSize: 50f);
+        listView.AddColumn("ì‚¬ë²ˆ",       width: 285f, fontSize: 50f);
+        listView.AddColumn("ë¶€ì¬",       width: 205f, fontSize: 50f);
+        listView.AddColumn("ë„ë£Œ",       width: 210f, fontSize: 50f);
+        listView.AddColumn("íŒì‚¬ì´ì¦ˆ",   width: 208f, fontSize: 50f);
+        listView.AddColumn("í† ì¶œì••",     width: 224f, fontSize: 50f);
+        listView.AddColumn("í¬ì„ë¥ ",     width: 180f, fontSize: 50f);
+        listView.AddColumn("ë„ìƒ‰ì°¨ìˆ˜",   width: 194f, fontSize: 50f);
+        listView.AddColumn("ì„±ì ì„œ ì¡°íšŒ", width: 336f, fontSize: 50f);
+        listView.AddColumn("ì„±ì ì„œ ì‚­ì œ", width: 336f, fontSize: 50f);
 
-        listView.AddRow("2024-04-25 22:11", "ÀÌÁöÀº", "°ü¸®ÆÀ", "20200003", "¼ÒºÎÀç", "EH2351", "524", "5.50bar", "20%", "2", "Á¶È¸", "»èÁ¦");
+        listView.AddRow("2024-04-25 22:11", "ì´ì§€ì€", "ê´€ë¦¬íŒ€", "20200003", "ì†Œë¶€ì¬", "EH2351", "524", "5.50bar", "20%", "2", "ì¡°íšŒ", "ì‚­ì œ");
+        listView.AddRow("2024-04-25 22:11", "ì´ì§€ì€", "ê´€ë¦¬íŒ€", "20200003", "ì†Œë¶€ì¬", "EH2351", "524", "5.50bar", "20%", "2", "ì¡°íšŒ", "ì‚­ì œ");
+        listView.AddRow("2024-04-25 22:11", "ì´ì§€ì€", "ê´€ë¦¬íŒ€", "20200003", "ì†Œë¶€ì¬", "EH2351", "524", "5.50bar", "20%", "2", "ì¡°íšŒ", "ì‚­ì œ");
+        listView.AddRow("2024-04-25 22:11", "ì´ì§€ì€", "ê´€ë¦¬íŒ€", "20200003", "ì†Œë¶€ì¬", "EH2351", "524", "5.50bar", "20%", "2", "ì¡°íšŒ", "ì‚­ì œ");
+        listView.AddRow("2024-04-25 22:11", "ì´ì§€ì€", "ê´€ë¦¬íŒ€", "20200003", "ì†Œë¶€ì¬", "EH2351", "524", "5.50bar", "20%", "2", "ì¡°íšŒ", "ì‚­ì œ");
+        listView.AddRow("2024-04-25 22:11", "ì´ì§€ì€", "ê´€ë¦¬íŒ€", "20200003", "ì†Œë¶€ì¬", "EH2351", "524", "5.50bar", "20%", "2", "ì¡°íšŒ", "ì‚­ì œ");
+        listView.AddRow("2024-04-25 22:11", "ì´ì§€ì€", "ê´€ë¦¬íŒ€", "20200003", "ì†Œë¶€ì¬", "EH2351", "524", "5.50bar", "20%", "2", "ì¡°íšŒ", "ì‚­ì œ");
     }
 }
 
