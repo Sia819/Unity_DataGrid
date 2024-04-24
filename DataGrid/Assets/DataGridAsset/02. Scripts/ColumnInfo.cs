@@ -27,7 +27,6 @@ public class ColumnInfo : MonoBehaviour
         get => (this.transform as RectTransform).rect.width;
         set
         {
-            Debug.Log(value);
             RectTransform rectTransform = (this.transform as RectTransform);
             rectTransform.sizeDelta = new Vector2(value, rectTransform.sizeDelta.y);
         }

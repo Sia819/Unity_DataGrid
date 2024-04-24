@@ -39,7 +39,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 90}
+  m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &7649540268304710299
 CanvasRenderer:
@@ -95,7 +95,7 @@ MonoBehaviour:
   useCrossBackgroundColor: 1
   content: {fileID: 8955697500492422719}
   cellTextPrefab: {fileID: 6040484525009447644, guid: 9e2cc14f6a8c93048aec10d037351b82, type: 3}
-  cellButtonPrefab: {fileID: 0}
+  cellButtonPrefab: {fileID: 2570112978363909877, guid: e7ee33b5a28028640ac75b8825ba87cb, type: 3}
 --- !u!1 &6389452646534572738
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,12 +108,12 @@ GameObject:
   - component: {fileID: 345305181710267930}
   - component: {fileID: 1801443997649329983}
   m_Layer: 0
-  m_Name: Image
+  m_Name: UnderLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2824071411718164819
 RectTransform:
   m_ObjectHideFlags: 0
@@ -132,7 +132,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 1}
+  m_SizeDelta: {x: 0, y: 2}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &345305181710267930
 CanvasRenderer:
@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.44313726, g: 0.44313726, b: 0.44313726, a: 1}
+  m_Color: {r: 0.19215687, g: 0.19215687, b: 0.19215687, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -231,7 +231,7 @@ MonoBehaviour:
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
-  m_ChildControlHeight: 1
+  m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0

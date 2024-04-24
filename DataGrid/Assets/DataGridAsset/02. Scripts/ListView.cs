@@ -26,9 +26,13 @@ public class ListView : MonoBehaviour
             {
                 if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
                 {
-                    Debug.Log("item changed!!");
                     ListViewWidthCal();
                     ListViewScrollCal();
+                }
+
+                for (int i = 0; i < rows.Count && i < 50; i++ )
+                {
+                    rows[i].RowIndex = i;
                 }
             }
         );
@@ -73,11 +77,12 @@ public class ListView : MonoBehaviour
         Header.AddColumn(columnName, width, fontSize);
     }
 
-    public void AddRow(params string[] rows)
+    /// <summary> ListViewRow 오브젝트를 생성하며 AddRow 작업을 인계합니다. </summary>
+    public void AddRow(params object[] rowElements)
     {
         GameObject listViewRowInstant = Instantiate(listViewRowPrefab, listItemParent.transform);
         ListViewRow listViewRow = listViewRowInstant.GetComponent<ListViewRow>();
-        listViewRow.Init(this, rows);
+        listViewRow.Init(this, rowElements);
         this.rows.Add(listViewRow);
     }
 

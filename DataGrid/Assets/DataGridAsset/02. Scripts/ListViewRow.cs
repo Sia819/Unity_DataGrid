@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 /// <summary>
@@ -17,10 +20,29 @@ public class ListViewRow : MonoBehaviour
     [SerializeField] private GameObject cellTextPrefab;
     [SerializeField] private GameObject cellButtonPrefab;
 
-    public int RowIndex { get; private set; }
+    private Image image;
 
+    public int RowIndex
+    {
+        get => rowIndex;
+        internal set
+        {
+            rowIndex = value;
+            if (useCrossBackgroundColor == true && value % 2 == 0)
+            {
+                image.color = new Color(13 / 255, 13 / 255, 13 / 255);
+            }
+        }
+    }
+
+    private int rowIndex;
     private ListView parent;
     private bool initialized = false;
+
+    private void Awake()
+    {
+        image = this.GetComponent<Image>();
+    }
 
     private void Start()
     {
@@ -37,35 +59,65 @@ public class ListViewRow : MonoBehaviour
         }
     }
 
-    public void Init(ListView parent, string[] cellData)
+    public void Init(ListView parent, object[] rowElements)
     {
         if (initialized == true)
         {
             Debug.LogWarning("두번 이상 ListViewRow를 초기화하려 했습니다.");
             return;
         }
-
+        this.initialized = true;
         this.parent = parent;
-        ChangeItem(cellData);
-        initialized = true;
-        GetInstanceID();
+
+        AddRows(rowElements);
     }
 
-    public void ChangeItem(string[] itemData)
+    public void AddRows(object[] rowElements)
     {
-        for (int i = 0; i < itemData.Length; i++)
+        for (int i = 0; i < rowElements.Length; i++)
         {
             ColumnInfo columnInfo = parent.Header.GetColumnInfo(i);
             if (columnInfo == null) return;
 
-            GameObject textObject = Instantiate(cellTextPrefab, content.transform);
-            RectTransform rectTransform = textObject.GetComponent<RectTransform>();
-            TMP_Text textComponent = textObject.GetComponent<TMP_Text>();
+            switch (rowElements[i])
+            {
+                case string text:
+                    {
+                        GameObject textObject = Instantiate(cellTextPrefab, content.transform);
+                        RectTransform rectTransform = textObject.GetComponent<RectTransform>();
+                        TMP_Text textComponent = textObject.transform.GetChild(0).GetComponent<TMP_Text>();
+                        //rectTransform.sizeDelta = new Vector2(columnInfo.Width, rectTransform.sizeDelta.y);
+                        rectTransform.sizeDelta = new Vector2(columnInfo.Width, (transform as RectTransform).rect.height);
+                        textComponent.text = text;
+                        gameObjectItems.Add(textObject);
+                        break;
+                    }
 
-            rectTransform.sizeDelta = new Vector2(columnInfo.Width, rectTransform.sizeDelta.y);
-            textComponent.text = itemData[i];
+                case UnityAction a:
+                    Console.Write("[버튼] | ");
+                    break;
 
-            gameObjectItems.Add(textObject);
+                case ValueTuple<string, UnityAction> tuple: // 명시적 타입 지정
+                    {
+                        GameObject buttonObject = Instantiate(cellButtonPrefab, content.transform);
+                        Button button = buttonObject.transform.GetChild(0).GetComponent<Button>();
+                        RectTransform rectTransform = buttonObject.GetComponent<RectTransform>();
+                        TMP_Text textComponent = buttonObject.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+                        rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, (transform as RectTransform).rect.height);
+                        textComponent.text = tuple.Item1;
+                        button.onClick.AddListener(tuple.Item2);
+                        gameObjectItems.Add(buttonObject);
+                        break;
+                    }
+                default:
+                    Debug.LogError("Unsupported element type");
+                    break;
+            }
+        }
+
+        for (int i = 0; i < rowElements.Length; i++)
+        {
+
         }
     }
 

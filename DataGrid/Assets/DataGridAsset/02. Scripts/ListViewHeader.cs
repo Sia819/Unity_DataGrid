@@ -14,7 +14,6 @@ public class ListViewHeader : MonoBehaviour
         get
         {
             var result = (columnResizerPrefab.transform as RectTransform).rect.width;
-            Debug.Log(result);
             return result;
         }
     }
