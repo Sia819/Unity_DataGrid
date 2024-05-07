@@ -1,0 +1,13 @@
+{
+    "name": "com.control.datagrid",
+    "displayName": "DataGrid",
+    "version": "0.0.1",
+    "unity": "2021.3",
+    "description": "DataGrid Custom Control",
+    "unityRelease": "34f1",
+    "author": {
+      "name": "lunasia819",
+      "email": "lunasia819@gmail.com",
+      "url": "https://github.com/Sia819"
+    }
+  }
