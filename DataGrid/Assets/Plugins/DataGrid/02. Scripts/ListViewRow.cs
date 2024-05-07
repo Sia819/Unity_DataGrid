@@ -1,133 +1,176 @@
 using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using TMPro;
 
-/// <summary>
-/// ListView Row Object
-/// </summary>
-public class ListViewRow : MonoBehaviour
+namespace UIExtension.ListView
 {
-    public List<GameObject> gameObjectItems;   // Columns of Row Gamebject. for example label, buttons...
-    public bool useCrossBackgroundColor = true;
-
-    [SerializeField] private GameObject content;
-
-    [Header("Prefabs")]
-    [SerializeField] private GameObject cellTextPrefab;
-    [SerializeField] private GameObject cellButtonPrefab;
-
-    private Image image;
-
-    public int RowIndex
+    /// <summary>
+    /// ListView Row Object
+    /// </summary>
+    public class ListViewRow : MonoBehaviour
     {
-        get => rowIndex;
-        internal set
+        public List<GameObject> gameObjectItems;   // Columns of Row Gamebject. for example label, buttons...
+        public bool useCrossBackgroundColor = true;
+
+        [SerializeField] private GameObject content;
+
+        [Header("Prefabs")]
+        [SerializeField] private GameObject cellTextPrefab;
+        [SerializeField] private GameObject cellButtonPrefab;
+
+        [Header("Sprites")]
+        [SerializeField] private Sprite blueUI;
+        [SerializeField] private Sprite redUI;
+        [SerializeField] private Sprite grayUI;
+
+        private Image image;
+
+        public int RowIndex
         {
-            rowIndex = value;
-            if (useCrossBackgroundColor == true && value % 2 == 0)
+            get => rowIndex;
+            internal set
             {
-                image.color = new Color(13 / 255, 13 / 255, 13 / 255);
-            }
-        }
-    }
-
-    private int rowIndex;
-    private ListView parent;
-    private bool initialized = false;
-
-    private void Awake()
-    {
-        image = this.GetComponent<Image>();
-    }
-
-    private void Start()
-    {
-        //HorizontalLayoutGroup group = this.gameObject.GetComponent<HorizontalLayoutGroup>();
-        //group.childControlHeight = false;
-        //group.childControlWidth = false;
-
-        // Add exist cells
-        for (int i = 0; i < content.transform.childCount; i++)
-        {
-            // TODO : cell.cs 가 생기면 TryGetComponent()로 구조가 변경되어야함.
-            Transform children = content.transform.GetChild(i);
-            gameObjectItems.Add(children.gameObject);
-        }
-    }
-
-    public void Init(ListView parent, object[] rowElements)
-    {
-        if (initialized == true)
-        {
-            Debug.LogWarning("두번 이상 ListViewRow를 초기화하려 했습니다.");
-            return;
-        }
-        this.initialized = true;
-        this.parent = parent;
-
-        AddRows(rowElements);
-    }
-
-    public void AddRows(object[] rowElements)
-    {
-        for (int i = 0; i < rowElements.Length; i++)
-        {
-            ColumnInfo columnInfo = parent.Header.GetColumnInfo(i);
-            if (columnInfo == null) return;
-
-            switch (rowElements[i])
-            {
-                case string text:
-                    {
-                        GameObject textObject = Instantiate(cellTextPrefab, content.transform);
-                        RectTransform rectTransform = textObject.GetComponent<RectTransform>();
-                        TMP_Text textComponent = textObject.transform.GetChild(0).GetComponent<TMP_Text>();
-                        //rectTransform.sizeDelta = new Vector2(columnInfo.Width, rectTransform.sizeDelta.y);
-                        rectTransform.sizeDelta = new Vector2(columnInfo.Width, (transform as RectTransform).rect.height);
-                        textComponent.text = text;
-                        gameObjectItems.Add(textObject);
-                        break;
-                    }
-
-                case UnityAction a:
-                    Console.Write("[버튼] | ");
-                    break;
-
-                case ValueTuple<string, UnityAction> tuple: // 명시적 타입 지정
-                    {
-                        GameObject buttonObject = Instantiate(cellButtonPrefab, content.transform);
-                        Button button = buttonObject.transform.GetChild(0).GetComponent<Button>();
-                        RectTransform rectTransform = buttonObject.GetComponent<RectTransform>();
-                        TMP_Text textComponent = buttonObject.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
-                        rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, (transform as RectTransform).rect.height);
-                        textComponent.text = tuple.Item1;
-                        button.onClick.AddListener(tuple.Item2);
-                        gameObjectItems.Add(buttonObject);
-                        break;
-                    }
-                default:
-                    Debug.LogError("Unsupported element type");
-                    break;
+                rowIndex = value;
+                if (useCrossBackgroundColor == true && value % 2 == 0)
+                {
+                    image.color = new Color(37 / 255f, 37 / 255f, 37 / 255f);
+                }
             }
         }
 
-        for (int i = 0; i < rowElements.Length; i++)
-        {
+        private int rowIndex;
+        private ListView parent;
+        private bool initialized = false;
 
+        private void Awake()
+        {
+            image = this.GetComponent<Image>();
+        }
+
+        private void Start()
+        {
+            // Add exist cells
+            for (int i = 0; i < content.transform.childCount; i++)
+            {
+                // TODO : cell.cs 가 생기면 TryGetComponent()로 구조가 변경되어야함.
+                Transform children = content.transform.GetChild(i);
+                gameObjectItems.Add(children.gameObject);
+            }
+        }
+
+        public void Init(ListView parent, object[] rowElements)
+        {
+            if (initialized == true)
+            {
+                Debug.LogWarning("두번 이상 ListViewRow를 초기화하려 했습니다.");
+                return;
+            }
+            this.initialized = true;
+            this.parent = parent;
+
+            AddRows(rowElements);
+        }
+
+        public void AddRows(object[] rowElements)
+        {
+            for (int i = 0; i < rowElements.Length; i++)
+            {
+                switch (rowElements[i])
+                {
+                    case string text:
+                        AddText(text, i);
+                        break;
+
+                    case int number:
+                        AddText(number.ToString(), i);
+                        break;
+
+                    case UnityAction action:
+                        AddButton("버튼", action);
+                        break;
+
+                    case (string text, UnityAction action):
+                        AddButton(text, action);
+                        break;
+
+                    case (string text, UnityAction action, ButtonColor color):
+                        AddButton(text, action, color);
+                        break;
+
+                    default:
+                        Debug.LogError($"Unsupported element type: {rowElements[i].GetType()}");
+                        break;
+                }
+            }
+        }
+
+        private void AddText(string text, int index)
+        {
+            GameObject textObject = Instantiate(cellTextPrefab, content.transform);
+            RectTransform rectTransform = textObject.GetComponent<RectTransform>();
+            TMP_Text textComponent = textObject.transform.GetChild(0).GetComponent<TMP_Text>();
+            ColumnInfo columnInfo = parent.Header.GetColumnInfo(index);
+
+            if (columnInfo != null)
+            {
+                rectTransform.sizeDelta = new Vector2(columnInfo.Width, (transform as RectTransform).rect.height);
+                textComponent.text = text;
+                gameObjectItems.Add(textObject);
+            }
+            else
+            {
+                Debug.LogError("ColumnInfo is null");
+            }
+        }
+
+        private void AddButton(string buttonText, UnityAction action, ButtonColor? buttonColor = null)
+        {
+            GameObject buttonObject = Instantiate(cellButtonPrefab, content.transform);
+            Button button = buttonObject.transform.GetChild(0).GetComponent<Button>();
+            RectTransform rectTransform = buttonObject.GetComponent<RectTransform>();
+            TMP_Text textComponent = buttonObject.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+
+            rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, (transform as RectTransform).rect.height);
+            textComponent.text = buttonText;
+            button.onClick.AddListener(action);
+            gameObjectItems.Add(buttonObject);
+
+            if (buttonColor.HasValue)
+            {
+                switch (buttonColor)
+                {
+                    case ButtonColor.Blue:
+                        buttonObject.transform.GetChild(0).GetComponent<Image>().sprite = blueUI;
+                        break;
+                    case ButtonColor.Red:
+                        buttonObject.transform.GetChild(0).GetComponent<Image>().sprite = redUI;
+                        break;
+                    case ButtonColor.Gray:
+                        buttonObject.transform.GetChild(0).GetComponent<Image>().sprite = grayUI;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        public void ChangeItemWidth(int cellIndex, float width)
+        {
+            if (cellIndex < gameObjectItems.Count)
+            {
+                RectTransform rectTransform = gameObjectItems[cellIndex].GetComponent<RectTransform>();
+                rectTransform.sizeDelta = new Vector2(width, rectTransform.sizeDelta.y);
+            }
+        }
+
+        public enum ButtonColor
+        {
+            Blue,
+            Red,
+            Gray
         }
     }
-
-    public void ChangeItemWidth(int cellIndex, float width)
-    {
-        if (cellIndex < gameObjectItems.Count)
-        {
-            RectTransform rectTransform = gameObjectItems[cellIndex].GetComponent<RectTransform>();
-            rectTransform.sizeDelta = new Vector2(width, rectTransform.sizeDelta.y);
-        }
-    }
-
 }

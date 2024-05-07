@@ -39,7 +39,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 500, y: 100}
+  m_SizeDelta: {x: 500, y: 110}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &7649540268304710299
 CanvasRenderer:
@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 0.09019608, g: 0.09019608, b: 0.09019608, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -96,6 +96,9 @@ MonoBehaviour:
   content: {fileID: 8955697500492422719}
   cellTextPrefab: {fileID: 6040484525009447644, guid: 9e2cc14f6a8c93048aec10d037351b82, type: 3}
   cellButtonPrefab: {fileID: 2570112978363909877, guid: e7ee33b5a28028640ac75b8825ba87cb, type: 3}
+  blueUI: {fileID: 21300000, guid: 13bde7d842a7af1428757ea703cf6ba0, type: 3}
+  redUI: {fileID: 21300000, guid: 8f340b7541a201e41bb3ad9f88ec5999, type: 3}
+  grayUI: {fileID: 21300000, guid: 4faf28e55f8aaab44ae6c8db39d04cb8, type: 3}
 --- !u!1 &6389452646534572738
 GameObject:
   m_ObjectHideFlags: 0

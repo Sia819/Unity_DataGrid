@@ -3,41 +3,44 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-[RequireComponent(typeof(RectTransform))]
-public class ColumnInfo : MonoBehaviour
+namespace UIExtension.ListView
 {
-    public int ColumnIndex = -1;
-
-    [SerializeField] private TMP_Text Text;
-
-    public ListView ListView { get; set; }
-
-    public string Name
+    [RequireComponent(typeof(RectTransform))]
+    public class ColumnInfo : MonoBehaviour
     {
-        get => this.Text.text;
-        set
+        public int ColumnIndex = -1;
+
+        [SerializeField] private TMP_Text Text;
+
+        public ListView ListView { get; set; }
+
+        public string Name
         {
-            this.Text.text = value;
-            this.name = value;
+            get => this.Text.text;
+            set
+            {
+                this.Text.text = value;
+                this.name = value;
+            }
         }
-    }
 
-    public float Width
-    {
-        get => (this.transform as RectTransform).rect.width;
-        set
+        public float Width
         {
-            RectTransform rectTransform = (this.transform as RectTransform);
-            rectTransform.sizeDelta = new Vector2(value, rectTransform.sizeDelta.y);
+            get => (this.transform as RectTransform).rect.width;
+            set
+            {
+                RectTransform rectTransform = (this.transform as RectTransform);
+                rectTransform.sizeDelta = new Vector2(value, rectTransform.sizeDelta.y);
+            }
         }
+
+        public float FontSize
+        {
+            get => Text.fontSize;
+            set => Text.fontSize = value;
+        }
+
+        public Color Color { get; set; } = Color.black;
+
     }
-
-    public float FontSize
-    {
-        get => Text.fontSize;
-        set => Text.fontSize = value;
-    }
-
-    public Color Color { get; set; } = Color.black;
-
 }
