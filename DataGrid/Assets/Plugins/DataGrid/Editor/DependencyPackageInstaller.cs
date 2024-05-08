@@ -3,15 +3,13 @@ using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
 using System.Linq;
-using System.IO;
 using System.Collections.Generic;
 
 public static class DependencyPackageInstaller
 {
     static private AddRequest request;
     static private ListRequest listRequest;
-    static private string cscRspPath = Path.Combine(Application.dataPath, "csc.rsp");
-    static private string defineDirective = "-define:DATAGRID_DEPENDENCY_INSTALLED";
+    static private string defineDirective = "DATAGRID_DEPENDENCY_INSTALLED";
 
     [InitializeOnLoadMethod]
     static private void InstallPackage()
@@ -41,7 +39,7 @@ public static class DependencyPackageInstaller
         }
         else
         {
-            UpdateCscRspFile(addDirective: true);
+            UpdateDefineSymbols(addDirective: true);
         }
     }
 
@@ -55,33 +53,36 @@ public static class DependencyPackageInstaller
         if (request.Status == StatusCode.Success)
         {
             Debug.Log("UniRx installed successfully.");
-            UpdateCscRspFile(addDirective: true);
+            UpdateDefineSymbols(addDirective: true);
         }
         else if (request.Status >= StatusCode.Failure)
         {
             Debug.LogError(request.Error.message);
-            UpdateCscRspFile(addDirective: false);
+            UpdateDefineSymbols(addDirective: false);
         }
     }
 
-    static private void UpdateCscRspFile(bool addDirective)
+    static private void UpdateDefineSymbols(bool addDirective)
     {
-        var directives = File.Exists(cscRspPath) ? File.ReadAllLines(cscRspPath).ToList() : new List<string>();
+        BuildTargetGroup buildTargetGroup = BuildTargetGroup.Standalone; // 필요한 경우 다른 플랫폼으로 변경하세요
+        var defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup);
+
+        var definesList = new List<string>(defines.Split(';'));
 
         if (addDirective)
         {
-            if (!directives.Contains(defineDirective))
+            if (!definesList.Contains(defineDirective))
             {
-                directives.Add(defineDirective);
-                File.WriteAllLines(cscRspPath, directives);
+                definesList.Add(defineDirective);
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, string.Join(";", definesList));
             }
         }
         else
         {
-            if (directives.Contains(defineDirective))
+            if (definesList.Contains(defineDirective))
             {
-                directives.Remove(defineDirective);
-                File.WriteAllLines(cscRspPath, directives);
+                definesList.Remove(defineDirective);
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, string.Join(";", definesList));
             }
         }
     }
