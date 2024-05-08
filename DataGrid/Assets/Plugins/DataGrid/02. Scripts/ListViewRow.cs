@@ -1,3 +1,4 @@
+#if DATAGRID_DEPENDENCY_INSTALLED
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -174,3 +175,4 @@ namespace UIExtension.ListView
         }
     }
 }
+#endif

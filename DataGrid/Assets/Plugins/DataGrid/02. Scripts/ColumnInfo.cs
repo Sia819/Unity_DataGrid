@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+#if DATAGRID_DEPENDENCY_INSTALLED
 using TMPro;
 using UnityEngine;
 
@@ -44,3 +43,4 @@ namespace UIExtension.ListView
 
     }
 }
+#endif

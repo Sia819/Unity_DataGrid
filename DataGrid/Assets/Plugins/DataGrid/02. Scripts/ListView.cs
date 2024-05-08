@@ -1,3 +1,4 @@
+#if DATAGRID_DEPENDENCY_INSTALLED
 using System;
 using System.Collections.ObjectModel;
 using UniRx;
@@ -165,3 +166,4 @@ namespace UIExtension.ListView
         }
     }
 }
+#endif

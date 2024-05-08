@@ -1,3 +1,4 @@
+#if DATAGRID_DEPENDENCY_INSTALLED
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -54,4 +55,4 @@ public class ListViewTest : MonoBehaviour
         */
     }
 }
-
+#endif

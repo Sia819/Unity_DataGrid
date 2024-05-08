@@ -1,3 +1,4 @@
+#if DATAGRID_DEPENDENCY_INSTALLED
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -30,4 +31,4 @@ public class DataGridTest : MonoBehaviour
         listView.AddRow("2024-05-07 22:11", "김철수", "관리팀", "20240001", ("확인", unityAction1), ("삭제", unityAction2));
     }
 }
-
+#endif
