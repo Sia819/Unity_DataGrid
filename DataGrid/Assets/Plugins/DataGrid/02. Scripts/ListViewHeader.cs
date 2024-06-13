@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using UniRx;
+using UnityEngine.Android;
 
 namespace UIExtension.ListView
 {
@@ -27,10 +28,20 @@ namespace UIExtension.ListView
         private ReactiveProperty<bool> awaked = new();
         private ReactiveProperty<bool> initialized = new();
 
-        internal IObservable<Unit> Initialized => awaked.CombineLatest(initialized, (awake, init) => awake && init)
-                                                  .Where(x => x)
-                                                  .AsUnitObservable();
+        /// <summary>
+        /// ListViewHeader가 유니티에 의해 완전히 초기화 된 시점입니다.
+        /// 이 시점 이후에 ListViewHeader를 정상적으로 사용할 수 있습니다.
+        /// (ListViewHeader 초기화 시점보다 명령이 우선될 수 없도록 관리다.)
+        /// </summary>
+        //internal IObservable<Unit> Initialized => awaked.CombineLatest(initialized, (awake, init) => awake && init)
+        //                                          .Where(x => x)
+        //                                          .AsUnitObservable();
 
+        public IObservable<Unit> Initialized => awaked.CombineLatest(initialized, (awake, init) => awake && init)
+                                                .Where(x => x)
+                                                .AsUnitObservable()
+                                                .Replay(1)
+                                                .RefCount();
 
         private void Start()
         {
@@ -47,9 +58,13 @@ namespace UIExtension.ListView
                 }
             }
             awaked.Value = true;
-
         }
 
+        /// <summary> 
+        /// ListViewHeader 오브젝트를 초기화합니다. 만약 ListViewHeader 오브젝트가 유니티에서 초기화 전에 
+        /// ListView가 ListViewHeader를 사용하려 하면 발생할 수 있는 실행 순서 오류를 방지합니다.
+        /// (ListViewHeader 오브젝트 초기화보다 명령이 먼저일 수 있기 때문입니다.)
+        /// </summary>
         public void Init(ListView parent, params string[] columnNames)
         {
             if (initialized.Value == false)
@@ -67,7 +82,7 @@ namespace UIExtension.ListView
             }
         }
 
-        /// <summary> Add New Column </summary>
+        /// <summary> 새로운 열을 만듭니다. </summary>
         public void AddColumn(string columnName, float width = 100f, float fontSize = 14f) // TODO : ColumnInfo -> Color 추가
         {
             ColumnInfo exist = columns.Find((columnInfo) => columnInfo.Name == columnName);
@@ -80,6 +95,41 @@ namespace UIExtension.ListView
             AddColumn(colBtnIns, columnName, width, fontSize);
         }
 
+        public ColumnInfo GetColumnInfo(int index)
+        {
+            if (index < 0 || index >= columns.Count)
+            {
+                Debug.LogWarning($"Column의 범위를 벗어나는 인덱스'{index}'에 접근했습니다!");
+                return null;
+            }
+            return columns[index];
+        }
+
+        /// <summary> 헤더에 추가된 모든 요소를 초기화 합니다. </summary>
+        public void ClearColumns()
+        {
+            foreach (ColumnInfo column in columns)
+            {
+                Destroy(column.ColumnResizer);
+                Destroy(column.gameObject);
+            }
+            columns.Clear();
+        }
+
+        /// <summary> 해당 열 이름과 같은 헤더의 Column을 제거합니다. </summary>
+        public void RemoveColumn(string columnName)
+        {
+            ColumnInfo column = columns.Find((columnInfo) => columnInfo.Name == columnName);
+            if (column == null)
+            {
+                Debug.LogWarning($"존재하지 않는 Column '{columnName}'을 제거하려 했습니다.");
+                return;
+            }
+            Destroy(column.ColumnResizer);
+            Destroy(column.gameObject);
+            columns.Remove(column);
+        }
+
         /// <summary> Add Exist Column </summary>
         private void AddColumn(GameObject column, string columnName, float width = 100f, float fontSize = 14f)
         {
@@ -89,23 +139,14 @@ namespace UIExtension.ListView
             columnInfo.ColumnIndex = columns.Count;
             columnInfo.Width = width;
             columnInfo.FontSize = fontSize;
-            columns.Add(columnInfo);
             if (parent.UseColumnResizer == true)
             {
                 GameObject resizer = Instantiate(columnResizerPrefab, this.transform);
                 ColumnResizer columnResizer = resizer.GetComponent<ColumnResizer>();
                 columnResizer.leftColumn = column.transform as RectTransform;
+                columnInfo.ColumnResizer = resizer;
             }
-        }
-
-        public ColumnInfo GetColumnInfo(int index)
-        {
-            if (index < 0 || index >= columns.Count)
-            {
-                Debug.LogWarning($"Column의 범위를 벗어나는 인덱스'{index}'에 접근했습니다!");
-                return null;
-            }
-            return columns[index];
+            columns.Add(columnInfo);
         }
     }
 }

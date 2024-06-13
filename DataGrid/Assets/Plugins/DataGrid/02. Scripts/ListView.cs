@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace UIExtension.ListView
 {
+    /// <summary>
+    /// Unity에서 
+    /// </summary>
     public class ListView : MonoBehaviour
     {
         [SerializeField] private GameObject listItemParent;                  // Parents to add items
@@ -22,7 +25,7 @@ namespace UIExtension.ListView
         public bool UseColumnResizer { get; set; } = false;
 
         private ObservableCollection<ListViewRow> rows = new();
-        
+
         internal IObservable<Unit> Initialized => Header.Initialized;
 
         private void Start()
@@ -68,27 +71,78 @@ namespace UIExtension.ListView
             }
         }
 
+        /// <summary> 한번에 여러 열을 추가합니다. </summary>
         public void AddColumn(params string[] columnName)
         {
-            Initialized.Subscribe(_ =>
+            for (int i = 0; i < columnName.Length; i++)
             {
-                for (int i = 0; i < columnName.Length; i++)
-                {
-                    Header.AddColumn(columnName[i]);
-                }
-            });
+                Header.AddColumn(columnName[i]);
+            }
         }
 
+        /// <summary> 하나의 열을 추가합니다. </summary>
         public void AddColumn(string columnName, float width, float fontSize)
         {
-            Initialized.Subscribe(_ => 
+            Initialized.Subscribe(_ =>
             {
                 Header.AddColumn(columnName, width, fontSize);
             });
         }
 
+        /// <summary> ListView의 모든 행과 열을 제거하여 초기화 합니다. </summary>
+        public void Clear()
+        {
+            ClearRows();
+            ClearColumns();
+        }
+        
+        /// <summary> ListView의 모든 열을 초기화 합니다. </summary>
+        public void ClearColumns()
+        {
+            Header.ClearColumns();
+        }
+
+        /// <summary> ListView의 모든 행을 초기화합니다. </summary>
+        public void ClearRows()
+        {
+            for (int i = 0; i < rows.Count; i++)
+            {
+                Destroy(rows[i].gameObject);
+            }
+            rows.Clear();
+        }
+
+        /// <summary> 해당 열을 삭제합니다. </summary>
+        public void RemoveColumn(string columnName)
+        {
+            Header.RemoveColumn(columnName);
+        }
+
+        /// <summary> 해당 인덱스의 행을 삭제합니다. </summary>
+        public void RemoveRow(int index)
+        {
+            if (index >= 0 && index < rows.Count)
+            {
+                Destroy(rows[index].gameObject);
+                rows.RemoveAt(index);
+            }
+            else
+            {
+                Debug.LogError("인덱스 범위에 벗어나는 행을 제거하려고 시도하였습니다 : " + index);
+            }
+        }
+
+        /// <summary> 해당 행을 제거합니다. </summary>
+        public void RemoveRow(ListViewRow row)
+        {
+            if (rows.Remove(row) == false)
+            {
+                Debug.LogError("해당하는 행을 제거하려고 시도하였지만, 찾을 수 없었습니다.");
+            }
+        }
+
         /// <summary> ListViewRow 오브젝트를 생성하며 AddRow 작업을 인계합니다. </summary>
-        /// <param name="rowElements"> <see cref="ListViewRow.AddRows"/>함수에서 지원하는 rowElements type들을 확인할 수 있습니다.</param>
+        /// <param name="rowElements"> <see cref="ListViewRow.AddElements"/>함수에서 지원하는 rowElements type들을 확인할 수 있습니다.</param>
         public void AddRow(params object[] rowElements)
         {
             Initialized.Subscribe(_ =>
@@ -100,17 +154,7 @@ namespace UIExtension.ListView
             });
         }
 
-        public void ClearRows()
-        {
-            Initialized.Subscribe(_ =>
-            {
-                for (int i = 0; i < rows.Count; i++)
-                {
-                    Destroy(rows[i].gameObject);
-                }
-                rows.Clear();
-            });
-        }
+
 
         public int GetRowIndex(ListViewRow listViewRow)
         {

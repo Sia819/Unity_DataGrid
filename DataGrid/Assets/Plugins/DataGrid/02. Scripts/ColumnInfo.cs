@@ -12,6 +12,7 @@ namespace UIExtension.ListView
         [SerializeField] private TMP_Text Text;
 
         public ListView ListView { get; set; }
+        public GameObject ColumnResizer { get; set; }
 
         public string Name
         {

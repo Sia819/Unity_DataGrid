@@ -72,10 +72,10 @@ namespace UIExtension.ListView
             this.initialized = true;
             this.parent = parent;
 
-            AddRows(rowElements);
+            AddElements(rowElements);
         }
 
-        public void AddRows(object[] rowElements)
+        public void AddElements(object[] rowElements)
         {
             for (int i = 0; i < rowElements.Length; i++)
             {

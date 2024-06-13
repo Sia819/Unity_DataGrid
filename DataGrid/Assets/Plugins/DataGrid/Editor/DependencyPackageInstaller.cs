@@ -1,3 +1,4 @@
+#if Unity_Editor
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.PackageManager;
@@ -87,3 +88,4 @@ public static class DependencyPackageInstaller
         }
     }
 }
+#endif
